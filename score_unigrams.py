@@ -33,7 +33,6 @@
 # You can add any additional import statements you need here.
 from math import log, inf
 
-
 import os
 import csv
 from math import log, inf
@@ -66,7 +65,7 @@ def compute_unigram_prob(sentence, word_probs):
         else:
             return "-inf" 
 
-    return str(log_prob) 
+    return f"{log_prob:.14f}"  
 
 def score_unigrams(training_folder, test_file, output_csv):
     """Train unigram model, compute sentence probabilities, and save to CSV."""

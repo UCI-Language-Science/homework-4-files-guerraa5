@@ -45,9 +45,11 @@ def get_mean_valence(csv_path):
             counts["Taste"] += 1
             counts["Smell"] += 1
         
-        mean_valence = {modality: (modalities[modality] / counts[modality]) for modality in modalities}
+        mean_valence = {modality: modalities[modality] / counts[modality] for modality in modalities}
 
         return mean_valence
+
+
     
     
 # Do not modify the following line
