@@ -20,10 +20,42 @@
 # flexible part of the English lexicon. Language, Cognition and Neuroscience, 31(8), 
 # 975-988.
 
-#######################
-# YOUR CODE GOES HERE #
-#######################
+import csv
 
+def get_mean_valence(csv_path):
+    with open(csv_path, 'r', encoding="utf-8") as file:
+        reader = csv.reader(file)
+        header = next(reader)
+
+        modalities = {"Sight": 0, "Sound": 0, "Touch": 0, "Taste": 0, "Smell": 0}
+        counts = {"Sight": 0, "Sound": 0, "Touch": 0, "Taste": 0, "Smell": 0}
+
+        for row in reader:
+            word, sight, hearing, touch, taste, smell = row
+
+            
+            if sight:
+                modalities["Sight"] += float(sight)
+                counts["Sight"] += 1
+            if hearing:
+                modalities["Sound"] += float(hearing)
+                counts["Sound"] += 1
+            if touch:
+                modalities["Touch"] += float(touch)
+                counts["Touch"] += 1
+            if taste:
+                modalities["Taste"] += float(taste)
+                counts["Taste"] += 1
+            if smell:
+                modalities["Smell"] += float(smell)
+                counts["Smell"] += 1
+        
+        # Calculate mean valence
+        mean_valence = {modality: modalities[modality] / counts[modality] if counts[modality] > 0 else 0 for modality in modalities}
+
+        return mean_valence
+
+    
 # Do not modify the following line
 if __name__ == "__main__":
     # You can write code to test your function here

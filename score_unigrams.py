@@ -31,12 +31,62 @@
 
 # You will need to use log and -inf here. 
 # You can add any additional import statements you need here.
+
+import os
+import csv
 from math import log, inf
 
+def train_unigram_model(training_folder):
+    """Train a unigram model from all .txt files in the given folder."""
+    word_counts = {}
+    total_words = 0
 
-#######################
-# YOUR CODE GOES HERE #
-#######################
+    for filename in os.listdir(training_folder):
+        if filename.endswith(".txt"):
+            with open(os.path.join(training_folder, filename), 'r', encoding="utf-8") as file:
+                for line in file:
+                    words = line.lower().split()
+                    for word in words:
+                        word_counts[word] = word_counts.get(word, 0) + 1
+                        total_words += 1
+
+    word_probs = {word: count / total_words for word, count in word_counts.items()}
+    return word_probs, total_words
+
+def compute_unigram_prob(sentence, word_probs):
+    """Compute the log probability of a sentence using the unigram model."""
+    words = sentence.lower().split()
+    log_prob = 0
+
+    for word in words:
+        if word in word_probs:
+            log_prob += log(word_probs[word])
+        else:
+            return "-inf" 
+
+    return f"{log_prob:.14f}"  
+
+def score_unigrams(training_folder, test_file, output_csv):
+    """Train unigram model, compute sentence probabilities, and save to CSV."""
+
+    if not os.path.isdir(training_folder):
+        raise FileNotFoundError(f"Training folder '{training_folder}' not found.")
+    
+    if not os.path.isfile(test_file):
+        raise FileNotFoundError(f"Test file '{test_file}' not found.")
+    
+    word_probs, _ = train_unigram_model(training_folder)
+
+    with open(test_file, 'r', encoding="utf-8") as test_f, open(output_csv, 'w', newline='', encoding="utf-8") as out_f:
+        writer = csv.writer(out_f)
+        writer.writerow(["sentence", "unigram_prob"])
+
+        for sentence in test_f:
+            sentence = sentence.strip()
+            if not sentence:  
+                continue
+            log_prob = compute_unigram_prob(sentence, word_probs)
+            writer.writerow([sentence, log_prob])
 
 
 
