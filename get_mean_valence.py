@@ -23,27 +23,27 @@
 import csv
 
 def get_mean_valence(csv_path):
-    with open(csv_path, 'r') as file:
+    with open(csv_path, 'r', encoding="utf-8") as file:
         reader = csv.reader(file)
         header = next(reader)
 
-        modalities = {"sight": 0, "hearing": 0, "touch": 0, "taste": 0, "smell": 0}
-        counts = {"sight": 0, "hearing": 0, "touch": 0, "taste": 0, "smell", 0}
+        modalities = {"Sight": 0, "Sound": 0, "Touch": 0, "Taste": 0, "Smell": 0}
+        counts = {"Sight": 0, "Sound": 0, "Touch": 0, "Taste": 0, "Smell": 0}
 
         for row in reader:
             word, sight, hearing, touch, taste, smell = row
 
-            modalities["sight"] += float(sight)
-            modalities["hearing"] += float(hearing)
-            modalities ["touch"] += float(touch)
-            modalities ["taste"] += float(taste)
-            modalities ["smell"] += float(smell)
+            modalities["Sight"] += float(sight)
+            modalities["Sound"] += float(hearing)  
+            modalities["Touch"] += float(touch)
+            modalities["Taste"] += float(taste)
+            modalities["Smell"] += float(smell)
 
-            counts["sight"] += 1
-            counts["hearing"] += 1
-            counts["touch"] += 1
-            counts["taste"] += 1
-            counts["smell"] += 1
+            counts["Sight"] += 1
+            counts["Sound"] += 1
+            counts["Touch"] += 1
+            counts["Taste"] += 1
+            counts["Smell"] += 1
         
         mean_valence = {modality: (modalities[modality] / counts[modality]) for modality in modalities}
 
