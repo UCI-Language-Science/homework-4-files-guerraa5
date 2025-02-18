@@ -31,7 +31,6 @@
 
 # You will need to use log and -inf here. 
 # You can add any additional import statements you need here.
-from math import log, inf
 
 import os
 import csv
@@ -69,6 +68,13 @@ def compute_unigram_prob(sentence, word_probs):
 
 def score_unigrams(training_folder, test_file, output_csv):
     """Train unigram model, compute sentence probabilities, and save to CSV."""
+
+    if not os.path.isdir(training_folder):
+        raise FileNotFoundError(f"Training folder '{training_folder}' not found.")
+    
+    if not os.path.isfile(test_file):
+        raise FileNotFoundError(f"Test file '{test_file}' not found.")
+    
     word_probs, _ = train_unigram_model(training_folder)
 
     with open(test_file, 'r', encoding="utf-8") as test_f, open(output_csv, 'w', newline='', encoding="utf-8") as out_f:
@@ -77,8 +83,11 @@ def score_unigrams(training_folder, test_file, output_csv):
 
         for sentence in test_f:
             sentence = sentence.strip()
+            if not sentence:  
+                continue
             log_prob = compute_unigram_prob(sentence, word_probs)
             writer.writerow([sentence, log_prob])
+
 
 
 # Do not modify the following line

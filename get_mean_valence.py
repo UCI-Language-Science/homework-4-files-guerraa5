@@ -33,24 +33,28 @@ def get_mean_valence(csv_path):
         for row in reader:
             word, sight, hearing, touch, taste, smell = row
 
-            modalities["Sight"] += float(sight)
-            modalities["Sound"] += float(hearing)  
-            modalities["Touch"] += float(touch)
-            modalities["Taste"] += float(taste)
-            modalities["Smell"] += float(smell)
-
-            counts["Sight"] += 1
-            counts["Sound"] += 1
-            counts["Touch"] += 1
-            counts["Taste"] += 1
-            counts["Smell"] += 1
+            
+            if sight:
+                modalities["Sight"] += float(sight)
+                counts["Sight"] += 1
+            if hearing:
+                modalities["Sound"] += float(hearing)
+                counts["Sound"] += 1
+            if touch:
+                modalities["Touch"] += float(touch)
+                counts["Touch"] += 1
+            if taste:
+                modalities["Taste"] += float(taste)
+                counts["Taste"] += 1
+            if smell:
+                modalities["Smell"] += float(smell)
+                counts["Smell"] += 1
         
-        mean_valence = {modality: modalities[modality] / counts[modality] for modality in modalities}
+        # Calculate mean valence
+        mean_valence = {modality: modalities[modality] / counts[modality] if counts[modality] > 0 else 0 for modality in modalities}
 
         return mean_valence
 
-
-    
     
 # Do not modify the following line
 if __name__ == "__main__":
